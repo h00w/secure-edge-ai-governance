@@ -42,7 +42,7 @@ Requirements:
 - npm
 
 ```bash
-git clone YOUR_GITHUB_REPOSITORY_URL
+git clone https://github.com/h00w/secure-edge-ai-governance.git
 cd secure-edge-ai-governance
 npm ci
 npm run dev

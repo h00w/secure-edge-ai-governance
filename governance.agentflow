@@ -1,0 +1,88 @@
+agentflow TB
+
+connector governance_portal["Governance Portal"]
+governance_portal@{
+  protocol: "mcp",
+  url: "https://secure-edge-ai-governance.hendar2-0.chatgpt.site/api/mcp"
+}
+
+flow governance["Human Governance"]
+  portal["Portal — assess risk and request two-person approval"]@{
+    instruction: |-
+      - Assess the deployment using the supplied deployment details.
+      - Use only supplied risk data and verifiable evidence.
+      - Request or record approval from two named, distinct approvers.
+      - Produce a decision for the deterministic policy gate.
+      - Do not fabricate missing facts or approval identities.
+  }
+  escalation["Escalation — handle gate failures and anomalies"]@{
+    instruction: |-
+      - Place failed or anomalous deployments on manual hold.
+      - Return the hold status in the governance record.
+  }
+  portal --> escalation
+  portal -.- governance_portal
+end
+
+governance@{
+  instruction: "Act as the human-governance authority; favor explicit approval, traceability, and safe escalation."
+}
+
+flow control_plane["Cloud Control Plane"]
+  control_gate{"Governance approval valid?"}
+  registry["Model Registry — package the candidate model"]
+  compressor["Model Compressor — optimize for target hardware"]
+  signer["HSM-Backed Signer — sign bundle and SBOM"]
+  policy_engine["Deterministic Policy Engine — evaluate deployment"]
+  attestation["Attestation Service — verify device identity"]
+  monitor["Observability and Monitor — evaluate operational evidence"]
+  audit_ledger["Immutable Audit Ledger — record control-plane events"]
+  hold["Manual Hold — stop deployment and record governance failure"]
+
+  control_gate -- approved --> registry
+  control_gate -- manual_hold --> hold
+  registry --> compressor --> signer --> policy_engine --> attestation --> monitor --> audit_ledger
+end
+
+control_plane@{
+  instruction: "Enforce deterministic policy, cryptographic provenance, device attestation, and immutable auditability."
+}
+
+flow assistants["Advisory AI Assistants"]
+  drift_detector["Drift Detector — calculate drift score"]
+  anomaly_detector["Anomaly Detector — flag cohort anomalies"]
+  model_compressor["Model Compressor — recommend hardware optimization"]
+  drift_detector --> anomaly_detector --> model_compressor
+end
+
+assistants@{
+  instruction: "Provide advisory analysis only; never override deterministic policy or human governance."
+}
+
+flow transport["Secure Transport"]
+  mtls_attestation["mTLS and Attestation Boundary — establish trusted channel"]
+end
+
+transport@{
+  instruction: "Protect every device-to-control-plane exchange with mutual TLS and attestation."
+}
+
+flow device_runtime["Secure Device Runtime"]
+  bootloader["Secure Bootloader — verify and load signed model"]
+  runtime["Model Runtime — execute blue/green deployment"]
+  telemetry["Telemetry Collector — measure latency and power"]
+  guard_rail["Guard-Rail Agent — detect inference failure and revert"]
+  release_gate{"Deployment approved?"}
+  rollback["Auto-Revert — restore the known-good model"]
+  activate["Activate blue/green runtime"]
+
+  bootloader --> runtime --> telemetry --> guard_rail --> release_gate
+  release_gate -- yes --> activate
+  release_gate -- no --> rollback
+end
+
+device_runtime@{
+  instruction: "Run only verified artifacts, collect protected telemetry, and fail safely to the known-good model."
+}
+
+governance --> control_plane --> assistants --> transport --> device_runtime
