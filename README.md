@@ -10,6 +10,8 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/h00w/secure-edge-ai-governance/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/h00w/secure-edge-ai-governance?style=social"></a>
+  <a href="https://github.com/h00w/secure-edge-ai-governance/forks"><img alt="GitHub forks" src="https://img.shields.io/github/forks/h00w/secure-edge-ai-governance?style=social"></a>
   <a href="https://github.com/h00w/secure-edge-ai-governance/actions/workflows/ci.yml"><img alt="CI status" src="https://github.com/h00w/secure-edge-ai-governance/actions/workflows/ci.yml/badge.svg"></a>
   <img alt="Node 22" src="https://img.shields.io/badge/Node.js-22-339933?logo=node.js&logoColor=white">
   <img alt="Python 3.12" src="https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white">
@@ -20,7 +22,7 @@
 </p>
 
 <p align="center">
-  <a href="https://secure-edge-ai-governance.streamlit.app/"><strong>Live Streamlit Demo</strong></a> ·
+  <a href="https://secure-edge-ai-governance.streamlit.app/"><strong>🚀 Live Demo</strong></a> ·
   <a href="https://secure-edge-ai-governance.hendar2-0.chatgpt.site/"><strong>Web Playground</strong></a> ·
   <a href="docs/ARCHITECTURE.md">Architecture</a> ·
   <a href="docs/SECURITY_MODEL.md">Security Model</a> ·
@@ -39,7 +41,8 @@
 </p>
 
 <p align="center">
-  <a href="https://secure-edge-ai-governance.streamlit.app/"><img src="https://img.shields.io/badge/▶%20OPEN%20LIVE%20DEMO-secure--edge--ai--governance.streamlit.app-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white" alt="Open live Streamlit demo"></a>
+  <a href="https://secure-edge-ai-governance.streamlit.app/"><img src="https://img.shields.io/badge/▶%20TRY%20THE%20LIVE%20DEMO-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white" alt="Try the live Streamlit demo"></a>
+  <a href="https://github.com/h00w/secure-edge-ai-governance"><img src="https://img.shields.io/badge/⭐%20STAR%20IF%20USEFUL-181717?style=for-the-badge&logo=github" alt="Star this repository"></a>
 </p>
 
 ---
@@ -56,6 +59,27 @@ The project intentionally separates:
 - **human accountability** from automated scoring;
 - **evidence collection** from policy evaluation; and
 - **demo claims** from production security capabilities.
+
+## Who this is for
+
+This project is designed for people working on:
+
+- **Agentic AI systems** where tools must not bypass deterministic policy;
+- **Edge AI / TinyML / embedded AI** deployed across fleets of devices;
+- **AI security and governance** where evidence must be attached to release decisions;
+- **MLOps / DevSecOps** teams adding approval, attestation, rollback, and audit controls;
+- **trusted computing** workflows involving device identity, TPM/TEE attestation, signatures, or measured state; and
+- **research or teaching** on practical AI lifecycle governance beyond static policy documents.
+
+If that overlaps with your work, try the live demo, open an issue with a scenario you want modeled, or star the repository so you can find it again.
+
+## What you can verify in 2 minutes
+
+1. Open the [live Streamlit demo](https://secure-edge-ai-governance.streamlit.app/).
+2. Keep all evidence valid and use two distinct approvers → `approved`.
+3. Set risk to `31`, drift to `26`, invalidate attestation, fail regression, or reuse the same approver identity → `manual_hold`.
+4. Inspect [`lib/policy.ts`](lib/policy.ts) and [`demos/streamlit/policy.py`](demos/streamlit/policy.py) to see the deterministic gate implemented independently in TypeScript and Python.
+5. Check [GitHub Actions](https://github.com/h00w/secure-edge-ai-governance/actions/workflows/ci.yml) for repeatable verification.
 
 ## Architecture at a glance
 
@@ -330,6 +354,18 @@ A concise proof statement:
 - **Demo guide:** [docs/DEMO_GUIDE.md](docs/DEMO_GUIDE.md)
 - **Portfolio proof:** [docs/PORTFOLIO.md](docs/PORTFOLIO.md)
 - **CI:** [GitHub Actions](https://github.com/h00w/secure-edge-ai-governance/actions/workflows/ci.yml)
+
+## Help the project grow
+
+If this project is useful for your work in **Agentic AI, Edge AI, AI security, trusted computing, or production AI governance**:
+
+- ⭐ **Star the repository** so other engineers can discover it;
+- 🍴 fork it and test another governance policy;
+- 🧪 open an issue with a failure mode or deployment scenario you want modeled;
+- 🤝 contribute a focused improvement with tests or evidence; or
+- 📣 share the live demo with teams working on secure AI deployment.
+
+The goal is not to accumulate vanity metrics. It is to build a small, inspectable reference implementation for an increasingly important production-AI problem.
 
 ## Author
 
