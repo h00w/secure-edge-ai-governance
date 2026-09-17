@@ -1,0 +1,28 @@
+{
+  "project": {
+    "name": "Secure Edge AI Governance",
+    "repository_name": "h00w/secure-edge-ai-governance",
+    "repository_url": "https://github.com/h00w/secure-edge-ai-governance",
+    "subject_type": "edge-ai-release-system",
+    "version": "0.1.0"
+  },
+  "inputs": [
+    {"path": "lib/policy.ts", "kind": "deterministic-release-policy"},
+    {"path": "demos/streamlit/policy.py", "kind": "independent-policy-implementation"},
+    {"path": "tests", "kind": "typescript-regression-tests"},
+    {"path": "docs/SECURITY_MODEL.md", "kind": "security-boundary"},
+    {"path": "package.json", "kind": "dependency-manifest"}
+  ],
+  "steps": [
+    {"name": "typescript-lint", "command": ["npm", "run", "lint"], "cwd": "."},
+    {"name": "typescript-build-and-tests", "command": ["npm", "test"], "cwd": "."},
+    {"name": "independent-python-policy-tests", "command": ["{python}", "-m", "pytest", "-q"], "cwd": "demos/streamlit"}
+  ],
+  "domain_decision": null,
+  "domain_decision_source": "deterministic governance gate",
+  "notes": [
+    "This reproduces executable governance semantics and independent policy tests; it does not claim production TPM/TEE quote verification, HSM signing, fleet OTA orchestration or production rollback.",
+    "A governance result is meaningful only for the exact deployment identity and evidence inputs bound to the tested policy revision.",
+    "REPRODUCED does not authorize deployment; the deterministic release gate retains authority."
+  ]
+}
