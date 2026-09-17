@@ -1,0 +1,16 @@
+{
+  "name": "Secure Edge AI Governance",
+  "subject_type": "edge_ai_release",
+  "repository": "https://github.com/h00w/secure-edge-ai-governance",
+  "version": null,
+  "verification_command": "npm run lint && npm test && cd demos/streamlit && python -m pytest -q",
+  "dependency_patterns": ["package.json", "package-lock.json", "demos/streamlit/requirements.txt"],
+  "input_patterns": ["lib/**/*.ts", "app/**/*.ts", "app/**/*.tsx", "demos/streamlit/**/*.py"],
+  "benchmark_name": "Secure Edge AI governance reviewer scenarios",
+  "benchmark_version": "1",
+  "benchmark_patterns": ["tests/**/*", "demos/streamlit/tests/**/*", "docs/**/*release-evidence*.md"],
+  "policy_name": "Fail-closed Edge AI release policy",
+  "policy_version": "1",
+  "policy_patterns": ["lib/policy.ts", "demos/streamlit/policy.py", "docs/SECURITY_MODEL.md", "docs/threat-model.md"],
+  "approvals_required": true
+}
