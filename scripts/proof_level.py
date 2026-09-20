@@ -125,6 +125,7 @@ def main() -> int:
     levels.append(level_record(2, names[2], level2, level2_reason))
 
     external_ok, external_results = external_evidence(config.get("externalEvidence", []), args.offline)
+    print(json.dumps({"externalEvidence": external_results}, sort_keys=True))
     level3 = level2 and external_ok and config.get("maxLevel", 2) >= 3
     levels.append(
         level_record(
