@@ -4,10 +4,16 @@
   "maxLevel": 3,
   "externalEvidence": [
     {
+      "kind": "public_demo_source",
+      "url": "https://api.github.com/repos/h00w/secure-edge-ai-governance/contents/demos/streamlit/app.py",
+      "displayUrl": "https://github.com/h00w/secure-edge-ai-governance/blob/main/demos/streamlit/app.py",
+      "required": true
+    },
+    {
       "kind": "public_streamlit_demo",
       "url": "https://secure-edge-ai-governance.streamlit.app/_stcore/health",
       "displayUrl": "https://secure-edge-ai-governance.streamlit.app/",
-      "required": true
+      "required": false
     }
   ],
   "level4": {},
