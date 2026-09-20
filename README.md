@@ -180,3 +180,14 @@ python -m streamlit run app.py
 AI Engineering · Secure Edge AI · Trusted Computing · AI Governance · Production AI
 
 [Website](https://hendarmawan.se) · [LinkedIn](https://www.linkedin.com/in/hender/) · [GitHub](https://github.com/h00w)
+
+
+## Production AI proof level
+
+This repository uses the shared **Production AI Five-Level Proof Model v1**:
+
+`L1 Runnable → L2 Reproducible → L3 Capability-Validated → L4 Production-Candidate → L5 Production-Validated`.
+
+Run `make proof` to generate the machine-readable assessment. The repository deliberately caps its current claim at **L3 — Capability-Validated**; the public reviewer surface and deterministic policy tests are evidence of capability, not proof of hardware-backed or fleet-production deployment.
+
+See [PROOF_MODEL.md](PROOF_MODEL.md) and [REPRODUCIBILITY.md](REPRODUCIBILITY.md).
