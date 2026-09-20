@@ -1,0 +1,18 @@
+{
+  "proofModelVersion": "1.0.0",
+  "minimumLevel": 3,
+  "maxLevel": 3,
+  "externalEvidence": [
+    {
+      "kind": "public_streamlit_demo",
+      "url": "https://secure-edge-ai-governance.streamlit.app/_stcore/health",
+      "displayUrl": "https://secure-edge-ai-governance.streamlit.app/",
+      "required": true
+    }
+  ],
+  "level4": {},
+  "level5": {
+    "enabled": false,
+    "reason": "Hardware-backed TPM/TEE verification, production signing, real OTA orchestration, fleet rollback execution, and target-fleet observation are explicitly outside the current implementation boundary."
+  }
+}
