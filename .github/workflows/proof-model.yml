@@ -33,6 +33,11 @@ jobs:
           npm ci
           python -m pip install -r demos/streamlit/requirements.txt
 
+      - name: Self-test L5 deployment evidence contract
+        run: |
+          make deployment-contract-selftest
+          make deployment-template-check
+
       - name: Build portable proof bundle
         run: make proof-package
 
