@@ -36,8 +36,8 @@ export function evaluateGate(
   if (!input.approverOneApproved || !input.approverTwoApproved) {
     reasons.push("Two-person approval is incomplete")
   }
-  if (input.riskScore > 30) reasons.push("Risk score exceeds the policy threshold of 30")
-  if (input.driftScore > 25) reasons.push("Drift score exceeds the policy threshold of 25")
+  if (!Number.isFinite(input.riskScore) || input.riskScore < 0 || input.riskScore > 30) reasons.push("Risk score must be finite and within the policy threshold of 0–30")
+  if (!Number.isFinite(input.driftScore) || input.driftScore < 0 || input.driftScore > 25) reasons.push("Drift score must be finite and within the policy threshold of 0–25")
   if (!input.signatureValid) reasons.push("Bundle signature is invalid")
   if (!input.attestationValid) reasons.push("Device attestation is invalid")
   if (!input.regressionPassed) reasons.push("Qualification regression gate failed")
