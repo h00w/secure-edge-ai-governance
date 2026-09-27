@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime, timezone
+from math import isfinite
 
 POLICY_VERSION = "edge-governance-v1.0"
 RISK_THRESHOLD = 30
@@ -33,10 +34,10 @@ def evaluate_gate(value: GateInput) -> dict:
         reasons.append("Approvers must be two distinct identities")
     if not value.approver_one_approved or not value.approver_two_approved:
         reasons.append("Two-person approval is incomplete")
-    if value.risk_score > RISK_THRESHOLD:
-        reasons.append(f"Risk score exceeds the policy threshold of {RISK_THRESHOLD}")
-    if value.drift_score > DRIFT_THRESHOLD:
-        reasons.append(f"Drift score exceeds the policy threshold of {DRIFT_THRESHOLD}")
+    if not isfinite(value.risk_score) or not 0 <= value.risk_score <= RISK_THRESHOLD:
+        reasons.append(f"Risk score must be finite and within 0–{RISK_THRESHOLD}")
+    if not isfinite(value.drift_score) or not 0 <= value.drift_score <= DRIFT_THRESHOLD:
+        reasons.append(f"Drift score must be finite and within 0–{DRIFT_THRESHOLD}")
     if not value.signature_valid:
         reasons.append("Bundle signature is invalid")
     if not value.attestation_valid:

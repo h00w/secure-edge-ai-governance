@@ -83,3 +83,17 @@ test("renders sidebar skeletons deterministically", async () => {
   assert.equal(first, second);
   assert.match(first, /--skeleton-width:70%/);
 });
+
+test("release policy holds non-finite and negative evidence scores", async () => {
+  const { evaluateGate } = await vite.ssrLoadModule("/lib/policy.ts");
+  const valid = {
+    deploymentId: "edge-model-1", riskScore: 10, driftScore: 10,
+    signatureValid: true, attestationValid: true, regressionPassed: true,
+    approverOneId: "security", approverOneApproved: true,
+    approverTwoId: "operations", approverTwoApproved: true,
+  };
+  assert.equal(evaluateGate(valid).status, "approved");
+  for (const invalid of [{riskScore: NaN}, {riskScore: -1}, {driftScore: Infinity}]) {
+    assert.equal(evaluateGate({...valid, ...invalid}).status, "manual_hold");
+  }
+});
