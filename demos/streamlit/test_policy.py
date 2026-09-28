@@ -4,6 +4,7 @@ from policy import GateInput, evaluate_gate
 def valid_input(**overrides):
     base = dict(
         deployment_id="edge-model-1",
+        evidence_deployment_id="edge-model-1",
         risk_score=10,
         drift_score=10,
         signature_valid=True,
@@ -43,3 +44,9 @@ def test_same_approver_identity_is_rejected():
 def test_non_finite_and_negative_scores_hold():
     for overrides in ({"risk_score": float("nan")}, {"drift_score": float("inf")}, {"risk_score": -1}):
         assert evaluate_gate(valid_input(**overrides))["status"] == "manual_hold"
+
+
+def test_evidence_from_another_deployment_cannot_authorize_candidate():
+    decision = evaluate_gate(valid_input(evidence_deployment_id="edge-model-2"))
+    assert decision["status"] == "manual_hold"
+    assert any("bound" in reason.lower() for reason in decision["reasons"])

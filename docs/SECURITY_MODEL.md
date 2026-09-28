@@ -34,6 +34,7 @@ A release is approved only if all of the following are true:
 - risk score is at most 30;
 - drift score is at most 25;
 - bundle signature evidence is valid;
+- the evidence record names the exact candidate deployment ID;
 - device attestation evidence is valid; and
 - regression qualification passed.
 

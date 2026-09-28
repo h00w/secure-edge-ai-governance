@@ -208,6 +208,7 @@ function ArchitectureRail({ approved }: { approved: boolean | null }) {
 
 export default function Home() {
   const [riskScore, setRiskScore] = useState(24)
+  const [evidenceMatches, setEvidenceMatches] = useState(true)
   const [driftScore, setDriftScore] = useState(12)
   const [signatureValid, setSignatureValid] = useState(true)
   const [attestationValid, setAttestationValid] = useState(true)
@@ -221,6 +222,7 @@ export default function Home() {
   const candidate = useMemo(
     () => ({
       deploymentId: "fleet-se-042 / vision-7.3.1",
+      evidenceDeploymentId: evidenceMatches ? "fleet-se-042 / vision-7.3.1" : "fleet-se-041 / vision-7.3.0",
       riskScore,
       driftScore,
       signatureValid,
@@ -233,6 +235,7 @@ export default function Home() {
     }),
     [
       riskScore,
+      evidenceMatches,
       driftScore,
       signatureValid,
       attestationValid,
@@ -249,6 +252,7 @@ export default function Home() {
 
   function resetDemo() {
     setRiskScore(24)
+    setEvidenceMatches(true)
     setDriftScore(12)
     setSignatureValid(true)
     setAttestationValid(true)
@@ -320,6 +324,7 @@ export default function Home() {
               </div>
 
               <div className="control-stack">
+                <BooleanControl label="Evidence identity matches" hint="Evidence is bound to candidate 7.3.1" checked={evidenceMatches} onCheckedChange={setEvidenceMatches} />
                 <BooleanControl label="Bundle signature" hint="HSM-backed artifact + SBOM" checked={signatureValid} onCheckedChange={setSignatureValid} />
                 <BooleanControl label="Device attestation" hint="Trusted identity and measured state" checked={attestationValid} onCheckedChange={setAttestationValid} />
                 <BooleanControl label="Regression qualification" hint="Accuracy, latency, power, compatibility" checked={regressionPassed} onCheckedChange={setRegressionPassed} />

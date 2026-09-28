@@ -34,6 +34,8 @@ Edge AI governance is often documented as policy, diagrams, or compliance checkl
 
 This project turns governance into executable software. A candidate release is approved only when **deployment identity, two distinct human approvals, risk, drift, signature, attestation, and regression evidence** satisfy deterministic policy. Any missing or failed control produces `manual_hold`.
 
+The demonstrator requires the evidence record's deployment ID to match the candidate ID. Reusing an otherwise valid record from another candidate produces `manual_hold`. This string-level check is not cryptographic proof of artifact identity; signed artifact digests and verifier integration remain future work.
+
 > **Advisory AI can recommend. Deterministic policy and accountable humans authorize.**
 
 ## Core engineering principle

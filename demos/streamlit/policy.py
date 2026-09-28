@@ -10,6 +10,7 @@ DRIFT_THRESHOLD = 25
 @dataclass(frozen=True)
 class GateInput:
     deployment_id: str
+    evidence_deployment_id: str
     risk_score: float
     drift_score: float
     signature_valid: bool
@@ -28,6 +29,8 @@ def evaluate_gate(value: GateInput) -> dict:
 
     if not value.deployment_id.strip():
         reasons.append("Deployment identity is missing")
+    if not value.evidence_deployment_id.strip() or value.evidence_deployment_id.strip() != value.deployment_id.strip():
+        reasons.append("Evidence is not bound to this deployment identity")
     if not approver_one or not approver_two:
         reasons.append("Both approver identities are required")
     if approver_one and approver_one == approver_two:

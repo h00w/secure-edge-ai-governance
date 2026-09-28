@@ -21,6 +21,7 @@ left, right = st.columns([1, 1])
 with left:
     st.subheader("1. Deployment evidence")
     deployment_id = st.text_input("Deployment ID", "edge-model-2026.09.1")
+    evidence_deployment_id = st.text_input("Evidence deployment ID", "edge-model-2026.09.1")
     risk_score = st.slider("Risk score", 0, 100, 18)
     drift_score = st.slider("Drift score", 0, 100, 12)
     signature_valid = st.checkbox("Bundle signature valid", True)
@@ -41,6 +42,7 @@ with right:
         decision = evaluate_gate(
             GateInput(
                 deployment_id=deployment_id,
+                evidence_deployment_id=evidence_deployment_id,
                 risk_score=risk_score,
                 drift_score=drift_score,
                 signature_valid=signature_valid,
@@ -69,6 +71,7 @@ with right:
         st.markdown("### Evidence summary")
         evidence = {
             "deployment_id": deployment_id,
+            "evidence_deployment_id": evidence_deployment_id,
             "risk_score": risk_score,
             "drift_score": drift_score,
             "signature_valid": signature_valid,
@@ -95,6 +98,7 @@ st.markdown("""
 3. **Attestation failure** — clear Device attestation valid.
 4. **Separation-of-duties failure** — use the same identity for both approvers.
 5. **Incomplete governance** — clear either approval checkbox.
+6. **Evidence reuse hold** — change Evidence deployment ID to a different candidate.
 
 This Streamlit surface reproduces the same governance rule as the TypeScript playground for portfolio demonstration. It is intentionally deterministic and does not claim to perform real TPM attestation, HSM signing, identity verification, or deployment execution.
 """)
