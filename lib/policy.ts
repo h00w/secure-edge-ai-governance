@@ -1,5 +1,6 @@
 export type GateInputs = {
   deploymentId: string
+  evidenceDeploymentId: string
   riskScore: number
   driftScore: number
   signatureValid: boolean
@@ -29,6 +30,9 @@ export function evaluateGate(
   const approverTwoId = input.approverTwoId.trim()
 
   if (!input.deploymentId.trim()) reasons.push("Deployment identity is missing")
+  if (!input.evidenceDeploymentId.trim() || input.evidenceDeploymentId.trim() !== input.deploymentId.trim()) {
+    reasons.push("Evidence is not bound to this deployment identity")
+  }
   if (!approverOneId || !approverTwoId) reasons.push("Both approver identities are required")
   if (approverOneId && approverOneId === approverTwoId) {
     reasons.push("Approvers must be two distinct identities")
