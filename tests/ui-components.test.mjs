@@ -88,6 +88,7 @@ test("release policy holds non-finite and negative evidence scores", async () =>
   const { evaluateGate } = await vite.ssrLoadModule("/lib/policy.ts");
   const valid = {
     deploymentId: "edge-model-1", riskScore: 10, driftScore: 10,
+    evidenceDeploymentId: "edge-model-1",
     signatureValid: true, attestationValid: true, regressionPassed: true,
     approverOneId: "security", approverOneApproved: true,
     approverTwoId: "operations", approverTwoApproved: true,
@@ -96,4 +97,5 @@ test("release policy holds non-finite and negative evidence scores", async () =>
   for (const invalid of [{riskScore: NaN}, {riskScore: -1}, {driftScore: Infinity}]) {
     assert.equal(evaluateGate({...valid, ...invalid}).status, "manual_hold");
   }
+  assert.equal(evaluateGate({...valid, evidenceDeploymentId: "edge-model-2"}).status, "manual_hold");
 });
