@@ -37,6 +37,7 @@ const tools = [
       type: "object",
       properties: {
         deployment_id: { type: "string" },
+        evidence_deployment_id: { type: "string", description: "Deployment ID recorded on the evidence bundle" },
         risk_score: { type: "number", minimum: 0, maximum: 100 },
         drift_score: { type: "number", minimum: 0, maximum: 100 },
         signature_valid: { type: "boolean" },
@@ -49,6 +50,7 @@ const tools = [
       },
       required: [
         "deployment_id",
+        "evidence_deployment_id",
         "risk_score",
         "drift_score",
         "signature_valid",
@@ -191,6 +193,7 @@ export async function POST(request: Request) {
   if (toolName === "evaluate_deployment_gate") {
     const decision = evaluateGate({
       deploymentId: stringArg(args.deployment_id),
+      evidenceDeploymentId: stringArg(args.evidence_deployment_id),
       riskScore: scoreArg(args.risk_score),
       driftScore: scoreArg(args.drift_score),
       signatureValid: args.signature_valid === true,
