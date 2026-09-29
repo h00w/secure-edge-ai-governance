@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from math import isfinite
+import re
 
 POLICY_VERSION = "edge-governance-v1.0"
 RISK_THRESHOLD = 30
@@ -11,6 +12,8 @@ DRIFT_THRESHOLD = 25
 class GateInput:
     deployment_id: str
     evidence_deployment_id: str
+    artifact_sha256: str
+    evidence_artifact_sha256: str
     risk_score: float
     drift_score: float
     signature_valid: bool
@@ -31,6 +34,10 @@ def evaluate_gate(value: GateInput) -> dict:
         reasons.append("Deployment identity is missing")
     if not value.evidence_deployment_id.strip() or value.evidence_deployment_id.strip() != value.deployment_id.strip():
         reasons.append("Evidence is not bound to this deployment identity")
+    digest = value.artifact_sha256.strip().lower()
+    evidence_digest = value.evidence_artifact_sha256.strip().lower()
+    if not re.fullmatch(r"[0-9a-f]{64}", digest) or evidence_digest != digest:
+        reasons.append("Evidence artifact SHA-256 does not match the candidate artifact")
     if not approver_one or not approver_two:
         reasons.append("Both approver identities are required")
     if approver_one and approver_one == approver_two:
