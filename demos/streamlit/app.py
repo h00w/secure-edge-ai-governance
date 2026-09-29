@@ -22,6 +22,8 @@ with left:
     st.subheader("1. Deployment evidence")
     deployment_id = st.text_input("Deployment ID", "edge-model-2026.09.1")
     evidence_deployment_id = st.text_input("Evidence deployment ID", "edge-model-2026.09.1")
+    artifact_sha256 = st.text_input("Candidate artifact SHA-256", "a" * 64)
+    evidence_artifact_sha256 = st.text_input("Evidence artifact SHA-256", "a" * 64)
     risk_score = st.slider("Risk score", 0, 100, 18)
     drift_score = st.slider("Drift score", 0, 100, 12)
     signature_valid = st.checkbox("Bundle signature valid", True)
@@ -43,6 +45,8 @@ with right:
             GateInput(
                 deployment_id=deployment_id,
                 evidence_deployment_id=evidence_deployment_id,
+                artifact_sha256=artifact_sha256,
+                evidence_artifact_sha256=evidence_artifact_sha256,
                 risk_score=risk_score,
                 drift_score=drift_score,
                 signature_valid=signature_valid,
@@ -72,6 +76,8 @@ with right:
         evidence = {
             "deployment_id": deployment_id,
             "evidence_deployment_id": evidence_deployment_id,
+            "artifact_sha256": artifact_sha256,
+            "evidence_artifact_sha256": evidence_artifact_sha256,
             "risk_score": risk_score,
             "drift_score": drift_score,
             "signature_valid": signature_valid,
@@ -99,6 +105,7 @@ st.markdown("""
 4. **Separation-of-duties failure** — use the same identity for both approvers.
 5. **Incomplete governance** — clear either approval checkbox.
 6. **Evidence reuse hold** — change Evidence deployment ID to a different candidate.
+7. **Artifact mismatch hold** — change Evidence artifact SHA-256 to a different digest.
 
-This Streamlit surface reproduces the same governance rule as the TypeScript playground for portfolio demonstration. It is intentionally deterministic and does not claim to perform real TPM attestation, HSM signing, identity verification, or deployment execution.
+This Streamlit surface is a deterministic demonstration. Its digest fields compare user-supplied values; it does not hash a real artifact or verify TPM attestation, HSM signing, identity, or deployment execution.
 """)
