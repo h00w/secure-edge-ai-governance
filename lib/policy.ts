@@ -1,6 +1,8 @@
 export type GateInputs = {
   deploymentId: string
   evidenceDeploymentId: string
+  artifactSha256: string
+  evidenceArtifactSha256: string
   riskScore: number
   driftScore: number
   signatureValid: boolean
@@ -32,6 +34,11 @@ export function evaluateGate(
   if (!input.deploymentId.trim()) reasons.push("Deployment identity is missing")
   if (!input.evidenceDeploymentId.trim() || input.evidenceDeploymentId.trim() !== input.deploymentId.trim()) {
     reasons.push("Evidence is not bound to this deployment identity")
+  }
+  const artifactDigest = input.artifactSha256?.trim().toLowerCase() ?? ""
+  const evidenceDigest = input.evidenceArtifactSha256?.trim().toLowerCase() ?? ""
+  if (!/^[0-9a-f]{64}$/.test(artifactDigest) || evidenceDigest !== artifactDigest) {
+    reasons.push("Evidence artifact SHA-256 does not match the candidate artifact")
   }
   if (!approverOneId || !approverTwoId) reasons.push("Both approver identities are required")
   if (approverOneId && approverOneId === approverTwoId) {

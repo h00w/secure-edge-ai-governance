@@ -89,6 +89,8 @@ test("release policy holds non-finite and negative evidence scores", async () =>
   const valid = {
     deploymentId: "edge-model-1", riskScore: 10, driftScore: 10,
     evidenceDeploymentId: "edge-model-1",
+    artifactSha256: "a".repeat(64),
+    evidenceArtifactSha256: "a".repeat(64),
     signatureValid: true, attestationValid: true, regressionPassed: true,
     approverOneId: "security", approverOneApproved: true,
     approverTwoId: "operations", approverTwoApproved: true,
@@ -98,4 +100,6 @@ test("release policy holds non-finite and negative evidence scores", async () =>
     assert.equal(evaluateGate({...valid, ...invalid}).status, "manual_hold");
   }
   assert.equal(evaluateGate({...valid, evidenceDeploymentId: "edge-model-2"}).status, "manual_hold");
+  assert.equal(evaluateGate({...valid, evidenceArtifactSha256: "b".repeat(64)}).status, "manual_hold");
+  assert.equal(evaluateGate({...valid, artifactSha256: "invalid"}).status, "manual_hold");
 });

@@ -38,6 +38,8 @@ const tools = [
       properties: {
         deployment_id: { type: "string" },
         evidence_deployment_id: { type: "string", description: "Deployment ID recorded on the evidence bundle" },
+        artifact_sha256: { type: "string", description: "Candidate artifact SHA-256 (demo input)" },
+        evidence_artifact_sha256: { type: "string", description: "Artifact SHA-256 recorded on the evidence (demo input)" },
         risk_score: { type: "number", minimum: 0, maximum: 100 },
         drift_score: { type: "number", minimum: 0, maximum: 100 },
         signature_valid: { type: "boolean" },
@@ -51,6 +53,8 @@ const tools = [
       required: [
         "deployment_id",
         "evidence_deployment_id",
+        "artifact_sha256",
+        "evidence_artifact_sha256",
         "risk_score",
         "drift_score",
         "signature_valid",
@@ -194,6 +198,8 @@ export async function POST(request: Request) {
     const decision = evaluateGate({
       deploymentId: stringArg(args.deployment_id),
       evidenceDeploymentId: stringArg(args.evidence_deployment_id),
+      artifactSha256: stringArg(args.artifact_sha256),
+      evidenceArtifactSha256: stringArg(args.evidence_artifact_sha256),
       riskScore: scoreArg(args.risk_score),
       driftScore: scoreArg(args.drift_score),
       signatureValid: args.signature_valid === true,
