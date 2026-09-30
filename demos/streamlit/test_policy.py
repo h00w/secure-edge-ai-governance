@@ -43,6 +43,10 @@ def test_same_approver_identity_is_rejected():
     assert any("distinct" in reason.lower() for reason in decision["reasons"])
 
 
+def test_case_variant_approver_identity_is_rejected():
+    assert evaluate_gate(valid_input(approver_two_id=" SECURITY "))["status"] == "manual_hold"
+
+
 def test_non_finite_and_negative_scores_hold():
     for overrides in ({"risk_score": float("nan")}, {"drift_score": float("inf")}, {"risk_score": -1}):
         assert evaluate_gate(valid_input(**overrides))["status"] == "manual_hold"
