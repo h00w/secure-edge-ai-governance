@@ -41,7 +41,7 @@ export function evaluateGate(
     reasons.push("Evidence artifact SHA-256 does not match the candidate artifact")
   }
   if (!approverOneId || !approverTwoId) reasons.push("Both approver identities are required")
-  if (approverOneId && approverOneId === approverTwoId) {
+  if (approverOneId && approverOneId.toLocaleLowerCase() === approverTwoId.toLocaleLowerCase()) {
     reasons.push("Approvers must be two distinct identities")
   }
   if (!input.approverOneApproved || !input.approverTwoApproved) {

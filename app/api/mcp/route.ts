@@ -178,7 +178,7 @@ export async function POST(request: Request) {
     const deploymentId = stringArg(args.deployment_id).trim()
     const approverOneId = stringArg(args.approver_one_id).trim()
     const approverTwoId = stringArg(args.approver_two_id).trim()
-    const valid = Boolean(deploymentId && approverOneId && approverTwoId && approverOneId !== approverTwoId)
+    const valid = Boolean(deploymentId && approverOneId && approverTwoId && approverOneId.toLocaleLowerCase() !== approverTwoId.toLocaleLowerCase())
     const result = valid
       ? {
           deployment_id: deploymentId,

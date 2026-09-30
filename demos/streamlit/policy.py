@@ -40,7 +40,7 @@ def evaluate_gate(value: GateInput) -> dict:
         reasons.append("Evidence artifact SHA-256 does not match the candidate artifact")
     if not approver_one or not approver_two:
         reasons.append("Both approver identities are required")
-    if approver_one and approver_one == approver_two:
+    if approver_one and approver_one.casefold() == approver_two.casefold():
         reasons.append("Approvers must be two distinct identities")
     if not value.approver_one_approved or not value.approver_two_approved:
         reasons.append("Two-person approval is incomplete")

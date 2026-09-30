@@ -96,6 +96,7 @@ test("release policy holds non-finite and negative evidence scores", async () =>
     approverTwoId: "operations", approverTwoApproved: true,
   };
   assert.equal(evaluateGate(valid).status, "approved");
+  assert.equal(evaluateGate({...valid, approverTwoId: " SECURITY "}).status, "manual_hold");
   for (const invalid of [{riskScore: NaN}, {riskScore: -1}, {driftScore: Infinity}]) {
     assert.equal(evaluateGate({...valid, ...invalid}).status, "manual_hold");
   }
