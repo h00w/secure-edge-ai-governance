@@ -209,6 +209,7 @@ function ArchitectureRail({ approved }: { approved: boolean | null }) {
 export default function Home() {
   const [riskScore, setRiskScore] = useState(24)
   const [evidenceMatches, setEvidenceMatches] = useState(true)
+  const [artifactMatches, setArtifactMatches] = useState(true)
   const [driftScore, setDriftScore] = useState(12)
   const [signatureValid, setSignatureValid] = useState(true)
   const [attestationValid, setAttestationValid] = useState(true)
@@ -223,6 +224,8 @@ export default function Home() {
     () => ({
       deploymentId: "fleet-se-042 / vision-7.3.1",
       evidenceDeploymentId: evidenceMatches ? "fleet-se-042 / vision-7.3.1" : "fleet-se-041 / vision-7.3.0",
+      artifactSha256: "a".repeat(64),
+      evidenceArtifactSha256: artifactMatches ? "a".repeat(64) : "b".repeat(64),
       riskScore,
       driftScore,
       signatureValid,
@@ -236,6 +239,7 @@ export default function Home() {
     [
       riskScore,
       evidenceMatches,
+      artifactMatches,
       driftScore,
       signatureValid,
       attestationValid,
@@ -325,6 +329,7 @@ export default function Home() {
 
               <div className="control-stack">
                 <BooleanControl label="Evidence identity matches" hint="Evidence is bound to candidate 7.3.1" checked={evidenceMatches} onCheckedChange={setEvidenceMatches} />
+                <BooleanControl label="Artifact digest matches" hint="Demo SHA-256 values for candidate and evidence" checked={artifactMatches} onCheckedChange={setArtifactMatches} />
                 <BooleanControl label="Bundle signature" hint="HSM-backed artifact + SBOM" checked={signatureValid} onCheckedChange={setSignatureValid} />
                 <BooleanControl label="Device attestation" hint="Trusted identity and measured state" checked={attestationValid} onCheckedChange={setAttestationValid} />
                 <BooleanControl label="Regression qualification" hint="Accuracy, latency, power, compatibility" checked={regressionPassed} onCheckedChange={setRegressionPassed} />
