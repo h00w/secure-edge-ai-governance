@@ -1,6 +1,12 @@
 from policy import GateInput, evaluate_gate
 
 
+def test_truthy_non_boolean_evidence_cannot_authorize_release():
+    for field in ("signature_valid", "attestation_valid", "regression_passed", "approver_one_approved", "approver_two_approved"):
+        for invalid in ("false", 1, None):
+            assert evaluate_gate(valid_input(**{field: invalid}))["status"] == "manual_hold"
+
+
 def valid_input(**overrides):
     base = dict(
         deployment_id="edge-model-1",

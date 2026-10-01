@@ -96,6 +96,11 @@ test("release policy holds non-finite and negative evidence scores", async () =>
     approverTwoId: "operations", approverTwoApproved: true,
   };
   assert.equal(evaluateGate(valid).status, "approved");
+  for (const field of ["signatureValid", "attestationValid", "regressionPassed", "approverOneApproved", "approverTwoApproved"]) {
+    for (const invalid of ["false", 1, null]) {
+      assert.equal(evaluateGate({...valid, [field]: invalid}).status, "manual_hold");
+    }
+  }
   assert.equal(evaluateGate({...valid, approverTwoId: " SECURITY "}).status, "manual_hold");
   for (const invalid of [{riskScore: NaN}, {riskScore: -1}, {driftScore: Infinity}]) {
     assert.equal(evaluateGate({...valid, ...invalid}).status, "manual_hold");
