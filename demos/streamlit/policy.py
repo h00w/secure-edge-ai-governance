@@ -42,17 +42,17 @@ def evaluate_gate(value: GateInput) -> dict:
         reasons.append("Both approver identities are required")
     if approver_one and approver_one.casefold() == approver_two.casefold():
         reasons.append("Approvers must be two distinct identities")
-    if not value.approver_one_approved or not value.approver_two_approved:
+    if value.approver_one_approved is not True or value.approver_two_approved is not True:
         reasons.append("Two-person approval is incomplete")
     if not isfinite(value.risk_score) or not 0 <= value.risk_score <= RISK_THRESHOLD:
         reasons.append(f"Risk score must be finite and within 0–{RISK_THRESHOLD}")
     if not isfinite(value.drift_score) or not 0 <= value.drift_score <= DRIFT_THRESHOLD:
         reasons.append(f"Drift score must be finite and within 0–{DRIFT_THRESHOLD}")
-    if not value.signature_valid:
+    if value.signature_valid is not True:
         reasons.append("Bundle signature is invalid")
-    if not value.attestation_valid:
+    if value.attestation_valid is not True:
         reasons.append("Device attestation is invalid")
-    if not value.regression_passed:
+    if value.regression_passed is not True:
         reasons.append("Qualification regression gate failed")
 
     return {

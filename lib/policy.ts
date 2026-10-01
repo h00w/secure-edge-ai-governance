@@ -44,14 +44,14 @@ export function evaluateGate(
   if (approverOneId && approverOneId.toLocaleLowerCase() === approverTwoId.toLocaleLowerCase()) {
     reasons.push("Approvers must be two distinct identities")
   }
-  if (!input.approverOneApproved || !input.approverTwoApproved) {
+  if (input.approverOneApproved !== true || input.approverTwoApproved !== true) {
     reasons.push("Two-person approval is incomplete")
   }
   if (!Number.isFinite(input.riskScore) || input.riskScore < 0 || input.riskScore > 30) reasons.push("Risk score must be finite and within the policy threshold of 0–30")
   if (!Number.isFinite(input.driftScore) || input.driftScore < 0 || input.driftScore > 25) reasons.push("Drift score must be finite and within the policy threshold of 0–25")
-  if (!input.signatureValid) reasons.push("Bundle signature is invalid")
-  if (!input.attestationValid) reasons.push("Device attestation is invalid")
-  if (!input.regressionPassed) reasons.push("Qualification regression gate failed")
+  if (input.signatureValid !== true) reasons.push("Bundle signature is invalid")
+  if (input.attestationValid !== true) reasons.push("Device attestation is invalid")
+  if (input.regressionPassed !== true) reasons.push("Qualification regression gate failed")
 
   return {
     status: reasons.length === 0 ? "approved" : "manual_hold",
