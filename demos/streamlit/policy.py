@@ -44,9 +44,11 @@ def evaluate_gate(value: GateInput) -> dict:
         reasons.append("Approvers must be two distinct identities")
     if value.approver_one_approved is not True or value.approver_two_approved is not True:
         reasons.append("Two-person approval is incomplete")
-    if not isfinite(value.risk_score) or not 0 <= value.risk_score <= RISK_THRESHOLD:
+    if (isinstance(value.risk_score, bool) or not isinstance(value.risk_score, (int, float))
+            or not isfinite(value.risk_score) or not 0 <= value.risk_score <= RISK_THRESHOLD):
         reasons.append(f"Risk score must be finite and within 0–{RISK_THRESHOLD}")
-    if not isfinite(value.drift_score) or not 0 <= value.drift_score <= DRIFT_THRESHOLD:
+    if (isinstance(value.drift_score, bool) or not isinstance(value.drift_score, (int, float))
+            or not isfinite(value.drift_score) or not 0 <= value.drift_score <= DRIFT_THRESHOLD):
         reasons.append(f"Drift score must be finite and within 0–{DRIFT_THRESHOLD}")
     if value.signature_valid is not True:
         reasons.append("Bundle signature is invalid")

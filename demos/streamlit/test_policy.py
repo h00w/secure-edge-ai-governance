@@ -69,3 +69,11 @@ def test_artifact_digest_mismatch_or_malformed_digest_holds():
         decision = evaluate_gate(valid_input(**overrides))
         assert decision["status"] == "manual_hold"
         assert any("SHA-256" in reason for reason in decision["reasons"])
+
+
+def test_malformed_score_types_hold_instead_of_approving_or_crashing():
+    for field in ("risk_score", "drift_score"):
+        for invalid in (True, False, "10", None, [], {}):
+            decision = evaluate_gate(valid_input(**{field: invalid}))
+            assert decision["status"] == "manual_hold"
+            assert any("score" in reason.lower() for reason in decision["reasons"])
