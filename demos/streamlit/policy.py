@@ -27,15 +27,21 @@ class GateInput:
 
 def evaluate_gate(value: GateInput) -> dict:
     reasons: list[str] = []
-    approver_one = value.approver_one_id.strip()
-    approver_two = value.approver_two_id.strip()
+    # Dataclass annotations do not validate runtime payloads.
+    def identity(raw: object) -> str:
+        return raw.strip() if isinstance(raw, str) else ""
 
-    if not value.deployment_id.strip():
+    approver_one = identity(value.approver_one_id)
+    approver_two = identity(value.approver_two_id)
+
+    deployment_id = identity(value.deployment_id)
+    evidence_deployment_id = identity(value.evidence_deployment_id)
+    if not deployment_id:
         reasons.append("Deployment identity is missing")
-    if not value.evidence_deployment_id.strip() or value.evidence_deployment_id.strip() != value.deployment_id.strip():
+    if not evidence_deployment_id or evidence_deployment_id != deployment_id:
         reasons.append("Evidence is not bound to this deployment identity")
-    digest = value.artifact_sha256.strip().lower()
-    evidence_digest = value.evidence_artifact_sha256.strip().lower()
+    digest = identity(value.artifact_sha256).lower()
+    evidence_digest = identity(value.evidence_artifact_sha256).lower()
     if not re.fullmatch(r"[0-9a-f]{64}", digest) or evidence_digest != digest:
         reasons.append("Evidence artifact SHA-256 does not match the candidate artifact")
     if not approver_one or not approver_two:
