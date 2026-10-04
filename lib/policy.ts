@@ -28,15 +28,18 @@ export function evaluateGate(
   evaluatedAt = new Date().toISOString()
 ): GateDecision {
   const reasons: string[] = []
-  const approverOneId = input.approverOneId.trim()
-  const approverTwoId = input.approverTwoId.trim()
+  const identity = (value: unknown) => typeof value === "string" ? value.trim() : ""
+  const approverOneId = identity(input.approverOneId)
+  const approverTwoId = identity(input.approverTwoId)
+  const deploymentId = identity(input.deploymentId)
+  const evidenceDeploymentId = identity(input.evidenceDeploymentId)
 
-  if (!input.deploymentId.trim()) reasons.push("Deployment identity is missing")
-  if (!input.evidenceDeploymentId.trim() || input.evidenceDeploymentId.trim() !== input.deploymentId.trim()) {
+  if (!deploymentId) reasons.push("Deployment identity is missing")
+  if (!evidenceDeploymentId || evidenceDeploymentId !== deploymentId) {
     reasons.push("Evidence is not bound to this deployment identity")
   }
-  const artifactDigest = input.artifactSha256?.trim().toLowerCase() ?? ""
-  const evidenceDigest = input.evidenceArtifactSha256?.trim().toLowerCase() ?? ""
+  const artifactDigest = identity(input.artifactSha256).toLowerCase()
+  const evidenceDigest = identity(input.evidenceArtifactSha256).toLowerCase()
   if (!/^[0-9a-f]{64}$/.test(artifactDigest) || evidenceDigest !== artifactDigest) {
     reasons.push("Evidence artifact SHA-256 does not match the candidate artifact")
   }
