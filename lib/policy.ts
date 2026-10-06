@@ -27,6 +27,14 @@ export function evaluateGate(
   input: GateInputs,
   evaluatedAt = new Date().toISOString()
 ): GateDecision {
+  if (!input || typeof input !== "object" || Array.isArray(input)) {
+    return {
+      status: "manual_hold",
+      reasons: ["Release gate input must be an object"],
+      policyVersion: POLICY_VERSION,
+      evaluatedAt,
+    }
+  }
   const reasons: string[] = []
   const identity = (value: unknown) => typeof value === "string" ? value.trim() : ""
   const approverOneId = identity(input.approverOneId)

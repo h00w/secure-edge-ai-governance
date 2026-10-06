@@ -26,6 +26,13 @@ class GateInput:
 
 
 def evaluate_gate(value: GateInput) -> dict:
+    if not isinstance(value, GateInput):
+        return {
+            "status": "manual_hold",
+            "reasons": ["Release gate input must be a GateInput record"],
+            "policy_version": POLICY_VERSION,
+            "evaluated_at": datetime.now(timezone.utc).isoformat(),
+        }
     reasons: list[str] = []
     # Dataclass annotations do not validate runtime payloads.
     def identity(raw: object) -> str:

@@ -31,6 +31,13 @@ def test_valid_release_is_approved():
     assert evaluate_gate(valid_input())["status"] == "approved"
 
 
+def test_malformed_outer_payload_holds_without_crashing():
+    for payload in (None, True, 123, "gate", [], {}):
+        decision = evaluate_gate(payload)
+        assert decision["status"] == "manual_hold"
+        assert decision["reasons"]
+
+
 def test_malformed_identity_types_hold_instead_of_crashing():
     fields = ("deployment_id", "evidence_deployment_id", "artifact_sha256",
               "evidence_artifact_sha256", "approver_one_id", "approver_two_id")
