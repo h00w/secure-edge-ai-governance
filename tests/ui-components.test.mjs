@@ -96,6 +96,11 @@ test("release policy holds non-finite and negative evidence scores", async () =>
     approverTwoId: "operations", approverTwoApproved: true,
   };
   assert.equal(evaluateGate(valid).status, "approved");
+  for (const payload of [null, undefined, true, 123, "gate", []]) {
+    const decision = evaluateGate(payload);
+    assert.equal(decision.status, "manual_hold");
+    assert.ok(decision.reasons.length > 0);
+  }
   for (const field of ["deploymentId", "evidenceDeploymentId", "artifactSha256", "evidenceArtifactSha256", "approverOneId", "approverTwoId"]) {
     for (const invalid of [null, undefined, true, 123, [], {}]) {
       const decision = evaluateGate({...valid, [field]: invalid});
