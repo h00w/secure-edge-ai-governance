@@ -36,6 +36,9 @@ export function evaluateGate(
     }
   }
   const reasons: string[] = []
+  if (typeof evaluatedAt !== "string" || !evaluatedAt.trim() || !Number.isFinite(Date.parse(evaluatedAt))) {
+    reasons.push("Evaluation timestamp must be a valid date-time string")
+  }
   const identity = (value: unknown) => typeof value === "string" ? value.trim() : ""
   const approverOneId = identity(input.approverOneId)
   const approverTwoId = identity(input.approverTwoId)
