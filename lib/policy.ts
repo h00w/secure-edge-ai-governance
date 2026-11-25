@@ -23,6 +23,14 @@ export type GateDecision = {
 
 export const POLICY_VERSION = "edge-governance-v1.0"
 
+function isAuditTime(value: unknown): boolean {
+  if (typeof value !== "string") return false
+  const match = /^(\d{4}-\d{2}-\d{2})T(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z|[+-](?:[01]\d|2[0-3]):[0-5]\d)$/.exec(value)
+  if (!match || !Number.isFinite(Date.parse(value))) return false
+  const date = new Date(match[1] + "T00:00:00Z")
+  return Number.isFinite(date.getTime()) && date.toISOString().slice(0, 10) === match[1]
+}
+
 export function evaluateGate(
   input: GateInputs,
   evaluatedAt = new Date().toISOString()
@@ -36,7 +44,7 @@ export function evaluateGate(
     }
   }
   const reasons: string[] = []
-  if (typeof evaluatedAt !== "string" || !evaluatedAt.trim() || !Number.isFinite(Date.parse(evaluatedAt))) {
+  if (!isAuditTime(evaluatedAt)) {
     reasons.push("Evaluation timestamp must be a valid date-time string")
   }
   const identity = (value: unknown) => typeof value === "string" ? value.trim() : ""
